@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Farflung — Journeys Worth the Fare</title>
+<meta name="description" content="Curated sunlit escapes, booked through Trip.com. Handpicked stays and fares for travelers who go far and feel it.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=Jost:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#FFFBF2;
+    --paper:#FFF4E2;
+    --ink:#22303A;
+    --ink-soft:rgba(34,48,58,0.66);
+    --teal:#0E6E7D;
+    --teal-deep:#0A4B56;
+    --coral:#FF6B4A;
+    --coral-deep:#E24F30;
+    --gold:#D9A441;
+    --gold-soft:#F0C878;
+    --sky:#6FC1DE;
+    --sun:#FFD873;
+    --line:rgba(34,48,58,0.10);
+    --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--cream);
+    color:var(--ink);
+    font-family:'Jost', sans-serif;
+    font-weight:400;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3, .display{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    letter-spacing:-0.01em;
+    margin:0;
+    color:var(--teal-deep);
+  }
+  .mono{ font-family:'IBM Plex Mono', monospace; letter-spacing:0.06em; }
+  a{ color:inherit; }
+  img,svg.art{max-width:100%;display:block;}
+  .wrap{ max-width:1180px; margin:0 auto; padding:0 32px; }
+  section{ position:relative; }
+
+  a:focus-visible, button:focus-visible{
+    outline:2px solid var(--coral);
+    outline-offset:3px;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; scroll-behavior:auto !important; }
+  }
+
+  /* ---------- NAV ---------- */
+  .nav{
+    position:fixed; top:0; left:0; right:0; z-index:50;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:22px 32px;
+    background:transparent;
+    transition:background 0.3s ease, box-shadow 0.3s ease, padding 0.3s ease;
+  }
+  .nav.scrolled{ background:rgba(255,251,242,0.92); box-shadow:0 1px 0 var(--line); padding:14px 32px; backdrop-filter: blur(8px); }
+  .logo{ display:flex; align-items:center; gap:10px; font-family:'Fraunces', serif; font-size:1.4rem; font-style:italic; color:var(--teal-deep); }
+  .logo .mark{ width:28px; height:28px; }
+  .nav-cta{
+    font-family:'IBM Plex Mono', monospace; font-size:0.72rem; letter-spacing:0.08em;
+    text-transform:uppercase; border:1.4px solid var(--coral); color:var(--coral-deep);
+    padding:9px 16px; text-decoration:none; transition:all .25s ease; border-radius:100px;
+  }
+  .nav-cta:hover{ background:var(--coral); color:#fff; }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    min-height:100svh;
+    display:flex; flex-direction:column; justify-content:center;
+    padding-top:120px; padding-bottom:80px;
+    overflow:hidden;
+    background:
+      radial-gradient(ellipse 60% 55% at 82% 8%, rgba(255,216,115,0.55), transparent),
+      radial-gradient(ellipse 55% 45% at 6% 92%, rgba(111,193,222,0.35), transparent),
+      linear-gradient(180deg, var(--cream), var(--paper));
+  }
+  .hero-eyebrow{
+    font-family:'IBM Plex Mono', monospace; font-size:0.72rem; letter-spacing:0.18em;
+    text-transform:uppercase; color:var(--teal); margin-bottom:22px; display:flex; align-items:center; gap:12px;
+  }
+  .hero-eyebrow::before{ content:""; width:34px; height:1px; background:var(--gold); display:inline-block; }
+  .hero h1{
+    font-size:clamp(2.6rem, 6.4vw, 5.2rem);
+    line-height:1.03;
+    max-width:16ch;
+    color:var(--ink);
+  }
+  .hero h1 em{ font-style:italic; color:var(--coral-deep); font-weight:500; }
+  .hero p.lede{
+    font-size:1.18rem; line-height:1.65; color:var(--ink-soft);
+    max-width:48ch; margin-top:26px;
+  }
+  .hero-actions{ display:flex; align-items:center; gap:22px; margin-top:40px; flex-wrap:wrap; }
+  .btn-primary{
+    font-family:'IBM Plex Mono', monospace; font-size:0.78rem; letter-spacing:0.08em; text-transform:uppercase;
+    background:var(--coral); color:#fff; text-decoration:none;
+    padding:17px 32px; display:inline-flex; align-items:center; gap:10px; border-radius:100px;
+    transition:transform .25s ease, background .25s ease, box-shadow .25s ease;
+    box-shadow:0 14px 30px -12px rgba(226,79,48,0.55);
+  }
+  .btn-primary:hover{ background:var(--coral-deep); transform:translateY(-2px); }
+  .btn-primary svg{ width:16px; height:16px; transition:transform .25s ease; }
+  .btn-primary:hover svg{ transform:translateX(3px); }
+  .hero-trust{ font-size:0.88rem; color:var(--ink-soft); }
+
+  .hero-sun{
+    position:absolute; top:60px; right:60px; width:220px; height:220px; border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, #FFF3CE, var(--sun) 60%, rgba(255,216,115,0));
+    opacity:0.9; filter:blur(0.5px); pointer-events:none;
+  }
+  .hero-flightpath{ position:absolute; inset:0; pointer-events:none; opacity:0.7; }
+  .plane{
+    offset-path: path("M -40 620 C 280 420, 520 380, 780 260 S 1200 120, 1420 60");
+    animation: fly 18s linear infinite;
+  }
+  @keyframes fly{
+    0%{ offset-distance:0%; opacity:0; }
+    5%{ opacity:1; }
+    95%{ opacity:1; }
+    100%{ offset-distance:100%; opacity:0; }
+  }
+
+  /* ---------- TRUST BAR ---------- */
+  .trustbar{
+    padding:26px 0; background:var(--teal-deep);
+  }
+  .trustbar .wrap{
+    display:flex; flex-wrap:wrap; gap:14px 40px; justify-content:center;
+    font-family:'IBM Plex Mono', monospace; font-size:0.7rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--gold-soft);
+  }
+  .trustbar span{ display:flex; align-items:center; gap:8px; }
+  .trustbar span::before{ content:"✦"; color:var(--gold); }
+
+  /* ---------- SECTION HEADS ---------- */
+  .section-head{ padding:110px 0 50px; }
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace; font-size:0.72rem; letter-spacing:0.18em; text-transform:uppercase;
+    color:var(--coral-deep); margin-bottom:16px;
+  }
+  .section-head h2{ font-size:clamp(2rem, 4vw, 3rem); max-width:22ch; }
+  .section-head p{ color:var(--ink-soft); max-width:58ch; margin-top:18px; line-height:1.65; }
+
+  /* ---------- DESTINATIONS ---------- */
+  .destinations{ padding-bottom:110px; background:var(--cream); }
+  .dest-grid{
+    display:grid; grid-template-columns:repeat(3, 1fr); gap:26px;
+  }
+  @media (max-width:900px){ .dest-grid{ grid-template-columns:repeat(2, 1fr); } }
+  @media (max-width:600px){ .dest-grid{ grid-template-columns:1fr; } }
+  .dest-card{
+    background:#fff; text-decoration:none; color:var(--ink);
+    position:relative; overflow:hidden; display:flex; flex-direction:column;
+    border-radius:var(--radius); box-shadow:0 10px 26px -16px rgba(34,48,58,0.25);
+    transition:transform .3s ease, box-shadow .3s ease;
+  }
+  .dest-card:hover{ transform:translateY(-6px); box-shadow:0 22px 40px -18px rgba(34,48,58,0.35); }
+  .dest-card:hover .dest-cta{ background:var(--coral-deep); }
+  .dest-art{ width:100%; height:170px; display:block; object-fit:cover; background:var(--paper); }
+  .dest-body{ padding:24px 24px 26px; display:flex; flex-direction:column; flex:1; }
+  .dest-name{ font-family:'Fraunces', serif; font-size:1.5rem; }
+  .dest-hook{ font-size:0.92rem; line-height:1.55; color:var(--ink-soft); margin-top:10px; flex:1; }
+  .dest-meta{ display:flex; align-items:baseline; justify-content:space-between; margin-top:18px; }
+  .dest-price{ font-family:'IBM Plex Mono', monospace; font-size:0.8rem; color:var(--teal); font-weight:500; }
+  .dest-loc{ font-family:'IBM Plex Mono', monospace; font-size:0.68rem; color:var(--ink-soft); text-transform:uppercase; letter-spacing:0.06em; }
+  .dest-cta{
+    margin-top:18px; font-family:'IBM Plex Mono', monospace; font-size:0.72rem; letter-spacing:0.06em; text-transform:uppercase;
+    background:var(--coral); color:#fff; text-align:center; padding:12px 10px; border-radius:100px;
+    transition:background .25s ease; display:flex; align-items:center; justify-content:center; gap:8px;
+  }
+  .dest-cta svg{ width:13px; height:13px; }
+  .stamp{
+    position:absolute; top:16px; right:16px;
+    width:52px; height:52px; border:1.4px solid #fff; border-radius:50%;
+    display:flex; align-items:center; justify-content:center; text-align:center;
+    transform:rotate(-12deg);
+    font-family:'IBM Plex Mono', monospace; font-size:0.5rem; letter-spacing:0.05em; text-transform:uppercase; color:#fff;
+    line-height:1.15; background:rgba(34,48,58,0.28); backdrop-filter:blur(2px);
+  }
+
+  /* ---------- BOARDING PASS ---------- */
+  .pass-wrap{ padding:110px 0; background:linear-gradient(160deg, var(--teal-deep), var(--teal) 70%); position:relative; overflow:hidden; }
+  .pass-wrap::before{ content:""; position:absolute; top:-120px; right:-80px; width:340px; height:340px; border-radius:50%; background:radial-gradient(circle, rgba(255,216,115,0.35), transparent 70%); }
+  .pass-wrap .eyebrow{ color:var(--gold-soft); }
+  .pass-wrap h2{ color:#fff; }
+  .pass{
+    max-width:900px; margin:0 auto; background:#fff; color:var(--ink);
+    display:flex; box-shadow:0 30px 60px rgba(10,40,45,0.35); border-radius:18px; overflow:hidden;
+  }
+  .pass-main{ flex:1; padding:44px 40px; position:relative; }
+  .pass-stub{
+    width:230px; background:var(--ink); color:var(--cream); padding:44px 26px;
+    display:flex; flex-direction:column; justify-content:space-between;
+    border-left:2px dashed rgba(255,255,255,0.25);
+    position:relative;
+  }
+  .pass-stub::before, .pass-stub::after{
+    content:""; position:absolute; left:-11px; width:22px; height:22px; border-radius:50%; background:var(--teal);
+  }
+  .pass-stub::before{ top:-11px; }
+  .pass-stub::after{ bottom:-11px; }
+  .pass-label{ font-family:'IBM Plex Mono', monospace; font-size:0.62rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--teal); }
+  .pass-stub .pass-label{ color:var(--gold-soft); }
+  .pass-row{ display:flex; justify-content:space-between; gap:20px; margin-top:26px; }
+  .pass-field{ flex:1; }
+  .pass-field .val{ font-family:'Fraunces', serif; font-size:1.3rem; margin-top:6px; color:var(--ink); }
+  .pass-field.mono .val{ font-family:'IBM Plex Mono', monospace; font-size:1rem; }
+  .barcode{ display:flex; gap:2px; height:34px; align-items:flex-end; margin-top:6px; }
+  .barcode span{ flex:1; background:var(--ink); opacity:0.85; }
+  .pass-cta{
+    margin-top:auto; font-family:'IBM Plex Mono', monospace; font-size:0.72rem; letter-spacing:0.08em; text-transform:uppercase;
+    background:var(--coral); color:#fff; text-align:center; padding:14px 10px; text-decoration:none; display:block; border-radius:100px;
+    transition:background .25s ease;
+  }
+  .pass-cta:hover{ background:var(--coral-deep); }
+  @media (max-width:720px){ .pass{ flex-direction:column; } .pass-stub{ width:auto; border-left:none; border-top:2px dashed rgba(255,255,255,0.2); flex-direction:row; flex-wrap:wrap; } .pass-stub::before,.pass-stub::after{ display:none; } }
+
+  /* ---------- DISCLOSURE ---------- */
+  .disclosure{ padding:90px 0; }
+  .disclosure-box{
+    border:1px solid var(--line); background:var(--paper); border-radius:var(--radius); padding:36px; display:flex; gap:24px; align-items:flex-start;
+  }
+  .disclosure-box svg{ width:26px; height:26px; flex-shrink:0; color:var(--teal); }
+  .disclosure-box p{ color:var(--ink-soft); line-height:1.65; margin:0; font-size:0.95rem; }
+  .disclosure-box strong{ color:var(--ink); }
+
+  /* ---------- POSTCARDS ---------- */
+  .postcards{ padding-bottom:120px; }
+  .postcard-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:26px; }
+  @media (max-width:900px){ .postcard-grid{ grid-template-columns:1fr; } }
+  .postcard{ border:1px solid var(--line); background:#fff; border-radius:var(--radius); padding:30px 28px; position:relative; }
+  .postcard::before{
+    content:"“"; font-family:'Fraunces', serif; font-size:3.4rem; color:var(--gold); opacity:0.8;
+    position:absolute; top:0px; left:20px; line-height:1;
+  }
+  .postcard p.quote{ margin-top:34px; line-height:1.7; color:var(--ink); font-size:0.98rem; }
+  .who-row{ display:flex; align-items:center; gap:10px; margin-top:20px; }
+  .who-avatar{ width:30px; height:30px; border-radius:50%; background:var(--sky); border:1.5px solid var(--gold); flex-shrink:0; display:flex; align-items:center; justify-content:center; font-family:'IBM Plex Mono', monospace; font-size:0.62rem; color:#fff; }
+  .postcard .who{ font-family:'IBM Plex Mono', monospace; font-size:0.7rem; letter-spacing:0.06em; text-transform:uppercase; color:var(--ink-soft); }
+
+  /* ---------- FOOTER CTA ---------- */
+  .final-cta{ padding:130px 0; text-align:center; background:linear-gradient(135deg, var(--coral) 0%, var(--coral-deep) 55%, var(--teal-deep) 130%); position:relative; overflow:hidden; }
+  .final-cta::before{ content:""; position:absolute; bottom:-140px; left:-60px; width:320px; height:320px; border-radius:50%; background:radial-gradient(circle, rgba(255,216,115,0.4), transparent 70%); }
+  .final-cta .eyebrow{ color:#FFE7C9; }
+  .final-cta h2{ font-size:clamp(2.1rem, 5vw, 3.4rem); max-width:20ch; margin:0 auto 30px; color:#fff; }
+  .final-cta .btn-primary{ padding:19px 38px; font-size:0.85rem; background:#fff; color:var(--coral-deep); box-shadow:0 18px 34px -14px rgba(10,30,30,0.4); }
+  .final-cta .btn-primary:hover{ background:var(--gold-soft); color:var(--ink); }
+
+  footer{ padding:44px 0; border-top:1px solid var(--line); background:var(--cream); }
+  footer .wrap{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; }
+  footer .fine{ font-size:0.75rem; color:var(--ink-soft); max-width:60ch; line-height:1.6; }
+  footer .flogo{ font-family:'Fraunces', serif; font-style:italic; font-size:1.1rem; color:var(--teal-deep); }
+  .disclosure-toggle{ font-size:0.75rem; color:var(--ink-soft); text-decoration:underline; text-underline-offset:2px; cursor:pointer; background:none; border:none; padding:0; font-family:'Jost', sans-serif; }
+  .disclosure-toggle:hover{ color:var(--coral-deep); }
+  footer details{ margin-top:14px; width:100%; }
+  footer summary{ list-style:none; }
+  footer summary::-webkit-details-marker{ display:none; }
+  footer .disclosure-text{ font-size:0.78rem; color:var(--ink-soft); line-height:1.6; max-width:70ch; margin-top:12px; }
+
+  .reveal{ opacity:0; transform:translateY(18px); transition:opacity .7s ease, transform .7s ease; }
+  .reveal.in{ opacity:1; transform:translateY(0); }
+</style>
+</head>
+<body>
+
+<nav class="nav" id="nav">
+  <div class="logo">
+    <svg class="mark" viewBox="0 0 26 26" fill="none"><circle cx="13" cy="13" r="12" stroke="#D9A441" stroke-width="1.3"/><path d="M13 4C15.5 7 16.8 9.8 16.8 13C16.8 16.2 15.5 19 13 22C10.5 19 9.2 16.2 9.2 13C9.2 9.8 10.5 7 13 4Z" fill="#FF6B4A" opacity="0.85"/><path d="M4 13H22" stroke="#0E6E7D" stroke-width="1"/></svg>
+    Farflung
+  </div>
+  <a class="nav-cta" href="#book" data-affiliate>Book via Trip.com</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-sun" aria-hidden="true"></div>
+  <div class="hero-flightpath" aria-hidden="true">
+    <svg width="100%" height="100%" viewBox="0 0 1440 700" preserveAspectRatio="none" style="position:absolute;inset:0;">
+      <path d="M -40 620 C 280 420, 520 380, 780 260 S 1200 120, 1420 60" fill="none" stroke="#D9A441" stroke-opacity="0.4" stroke-width="1.4" stroke-dasharray="2 10"/>
+      <g class="plane">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="#E24F30"><path d="M2 16l7-2 5 6 2-1-3-7 6-5c1-.8.5-2.3-1-2l-7 2-5-5-2 1 2 6-6 4z"/></svg>
+      </g>
+    </svg>
+  </div>
+  <div class="wrap">
+    <div class="hero-eyebrow">Curated by Farflung · Booked on Trip.com</div>
+    <h1>Somewhere sunnier is <em>calling</em> you.</h1>
+    <p class="lede">We chase down the stays and fares that make a trip unforgettable, then hand you the exact booking — no scrolling through forty tabs to find it. Just the six places worth actually going.</p>
+    <div class="hero-actions">
+      <a class="btn-primary" href="#destinations">
+        See where to go
+        <svg viewBox="0 0 16 16" fill="none"><path d="M2 8h11M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6"/></svg>
+      </a>
+      <span class="hero-trust">Prices and availability update live on Trip.com</span>
+    </div>
+  </div>
+</section>
+
+<div class="trustbar">
+  <div class="wrap">
+    <span>Best price guarantee</span>
+    <span>Free cancellation on select stays</span>
+    <span>24/7 multilingual support</span>
+    <span>190+ countries covered</span>
+  </div>
+</div>
+
+<section class="destinations" id="destinations">
+  <div class="wrap section-head reveal">
+    <div class="eyebrow">Where next</div>
+    <h2>Six places that reliably ruin you for ordinary trips.</h2>
+    <p>Handpicked for the kind of light you'll still think about at your desk in December. Every card links straight to live fares and stays on Trip.com.</p>
+  </div>
+  <div class="wrap">
+  <div class="dest-grid">
+
+    <a class="dest-card reveal" href="#book" data-affiliate>
+      <div class="stamp">№ 01</div>
+      <img class="dest-art" src="https://images.unsplash.com/photo-1533105079780-92b9be482077?w=800&amp;h=600&amp;fit=crop&amp;auto=format&amp;q=80" alt="Whitewashed cliffside houses and blue-domed church overlooking the sea in Santorini, Greece" loading="lazy">
+      <div class="dest-body">
+        <div class="dest-name">Santorini</div>
+        <p class="dest-hook">Whitewashed cliffs, blue-domed chapels, and a sunset that stops every conversation at the table.</p>
+        <div class="dest-meta"><span class="mono dest-price">FROM $1,240</span><span class="dest-loc">GREECE</span></div>
+        <span class="dest-cta">See stays &amp; fares <svg viewBox="0 0 16 16" fill="none"><path d="M2 8h11M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6"/></svg></span>
+      </div>
+    </a>
+
+    <a class="dest-card reveal" href="#book" data-affiliate>
+      <div class="stamp">№ 02</div>
+      <img class="dest-art" src="https://images.unsplash.com/photo-1753517457294-2bf4694e3760?w=800&amp;h=600&amp;fit=crop&amp;auto=format&amp;q=80" alt="A corridor of vermilion torii gates at Fushimi Inari Shrine in Kyoto, Japan" loading="lazy">
+      <div class="dest-body">
+        <div class="dest-name">Kyoto</div>
+        <p class="dest-hook">Lantern-lit alleys, temple bells at dusk, and maple light filtering through quiet gardens.</p>
+        <div class="dest-meta"><span class="mono dest-price">FROM $980</span><span class="dest-loc">JAPAN</span></div>
+        <span class="dest-cta">See stays &amp; fares <svg viewBox="0 0 16 16" fill="none"><path d="M2 8h11M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6"/></svg></span>
+      </div>
+    </a>
+
+    <a class="dest-card reveal" href="#book" data-affiliate>
+      <div class="stamp">№ 03</div>
+      <img class="dest-art" src="https://images.pexels.com/photos/28843967/pexels-photo-28843967.jpeg?w=800&amp;h=600&amp;fit=crop&amp;auto=compress&amp;cs=tinysrgb" alt="Aerial view of an overwater villa in a clear turquoise lagoon in the Maldives" loading="lazy">
+      <div class="dest-body">
+        <div class="dest-name">The Maldives</div>
+        <p class="dest-hook">A bungalow over water so clear it feels like you're floating a few feet above the ocean floor.</p>
+        <div class="dest-meta"><span class="mono dest-price">FROM $2,180</span><span class="dest-loc">INDIAN OCEAN</span></div>
+        <span class="dest-cta">See stays &amp; fares <svg viewBox="0 0 16 16" fill="none"><path d="M2 8h11M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6"/></svg></span>
+      </div>
+    </a>
+
+    <a class="dest-card reveal" href="#book" data-affiliate>
+      <div class="stamp">№ 04</div>
+      <img class="dest-art" src="https://images.pexels.com/photos/31356131/pexels-photo-31356131.png?w=800&amp;h=600&amp;fit=crop&amp;auto=compress&amp;cs=tinysrgb" alt="A traditional Moroccan riad courtyard with a pool and tiled arches in Marrakech" loading="lazy">
+      <div class="dest-body">
+        <div class="dest-name">Marrakech</div>
+        <p class="dest-hook">Spiced air in the souks, mosaic courtyards, and rooftop views over the medina at golden hour.</p>
+        <div class="dest-meta"><span class="mono dest-price">FROM $860</span><span class="dest-loc">MOROCCO</span></div>
+        <span class="dest-cta">See stays &amp; fares <svg viewBox="0 0 16 16" fill="none"><path d="M2 8h11M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6"/></svg></span>
+      </div>
+    </a>
+
+    <a class="dest-card reveal" href="#book" data-affiliate>
+      <div class="stamp">№ 05</div>
+      <img class="dest-art" src="https://images.pexels.com/photos/5686514/pexels-photo-5686514.jpeg?w=800&amp;h=600&amp;fit=crop&amp;auto=compress&amp;cs=tinysrgb" alt="Dubai Marina skyline of skyscrapers silhouetted against a dramatic sunset sky" loading="lazy">
+      <div class="dest-body">
+        <div class="dest-name">Dubai</div>
+        <p class="dest-hook">Desert gold by day, a skyline that lights up like a circuit board the moment the sun drops.</p>
+        <div class="dest-meta"><span class="mono dest-price">FROM $1,050</span><span class="dest-loc">UAE</span></div>
+        <span class="dest-cta">See stays &amp; fares <svg viewBox="0 0 16 16" fill="none"><path d="M2 8h11M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6"/></svg></span>
+      </div>
+    </a>
+
+    <a class="dest-card reveal" href="#book" data-affiliate>
+      <div class="stamp">№ 06</div>
+      <img class="dest-art" src="https://images.pexels.com/photos/19990859/pexels-photo-19990859.jpeg?w=800&amp;h=600&amp;fit=crop&amp;auto=compress&amp;cs=tinysrgb" alt="Colorful cliffside houses overlooking the sea in Positano on the Amalfi Coast, Italy" loading="lazy">
+      <div class="dest-body">
+        <div class="dest-name">Amalfi Coast</div>
+        <p class="dest-hook">Lemon groves, pastel villages stacked on cliffs, and a coastline built for doing absolutely nothing.</p>
+        <div class="dest-meta"><span class="mono dest-price">FROM $1,410</span><span class="dest-loc">ITALY</span></div>
+        <span class="dest-cta">See stays &amp; fares <svg viewBox="0 0 16 16" fill="none"><path d="M2 8h11M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6"/></svg></span>
+      </div>
+    </a>
+
+  </div>
+  </div>
+</section>
+
+<section class="pass-wrap" id="book">
+  <div class="wrap reveal">
+    <div class="eyebrow">How booking works</div>
+    <h2 style="max-width:24ch;margin-bottom:40px;">One boarding pass. Three fields. No detours.</h2>
+    <div class="pass">
+      <div class="pass-main">
+        <div class="pass-label">Farflung × Trip.com</div>
+        <div class="pass-row">
+          <div class="pass-field">
+            <div class="pass-label">From</div>
+            <div class="val">Wherever you are</div>
+          </div>
+          <div class="pass-field">
+            <div class="pass-label">To</div>
+            <div class="val">Anywhere on the map</div>
+          </div>
+        </div>
+        <div class="pass-row">
+          <div class="pass-field">
+            <div class="pass-label">Class</div>
+            <div class="val">Your choice</div>
+          </div>
+          <div class="pass-field mono">
+            <div class="pass-label">Confirmation</div>
+            <div class="val">Instant</div>
+          </div>
+        </div>
+        <div class="pass-row">
+          <div class="pass-field" style="flex:1">
+            <div class="pass-label">Carrier</div>
+            <div class="barcode" aria-hidden="true">
+              <span style="width:3px"></span><span style="width:1px"></span><span style="width:2px"></span><span style="width:1px"></span><span style="width:4px"></span><span style="width:1px"></span><span style="width:2px"></span><span style="width:3px"></span><span style="width:1px"></span><span style="width:2px"></span><span style="width:1px"></span><span style="width:3px"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pass-stub">
+        <div>
+          <div class="pass-label">Gate</div>
+          <div class="val" style="font-size:1.1rem;color:#fff;">Click through</div>
+        </div>
+        <a class="pass-cta" href="#" data-affiliate>Book on Trip.com →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="postcards">
+  <div class="wrap section-head reveal">
+    <div class="eyebrow">Reports from the road</div>
+    <h2>Word travels.</h2>
+  </div>
+  <div class="wrap postcard-grid">
+    <div class="postcard reveal">
+      <p class="quote">Booked the Kyoto ryokan straight from here — cheaper than anywhere else I checked, and the confirmation landed before I'd finished my coffee.</p>
+      <div class="who-row"><div class="who-avatar">RO</div><div class="who">R. Okafor, Lagos</div></div>
+    </div>
+    <div class="postcard reveal">
+      <p class="quote">I'd been putting off the Maldives trip for two years. Seeing the actual price laid out like this is what finally got me to book it.</p>
+      <div class="who-row"><div class="who-avatar">ML</div><div class="who">M. Laurent, Brussels</div></div>
+    </div>
+    <div class="postcard reveal">
+      <p class="quote">Appreciated the honesty about the commission. Booked anyway because the fare was genuinely the best one I found.</p>
+      <div class="who-row"><div class="who-avatar">TN</div><div class="who">T. Nakashima, Osaka</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="final-cta">
+  <div class="wrap reveal">
+    <div class="eyebrow" style="justify-content:center;display:flex;">Last call</div>
+    <h2>Pick a place. We'll point you to the gate.</h2>
+    <a class="btn-primary" href="#book" data-affiliate>
+      Search fares &amp; stays
+      <svg viewBox="0 0 16 16" fill="none"><path d="M2 8h11M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6"/></svg>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap" style="flex-direction:column;align-items:flex-start;">
+    <div style="display:flex;justify-content:space-between;align-items:center;width:100%;flex-wrap:wrap;gap:16px;">
+      <div class="flogo">Farflung</div>
+      <p class="fine" style="margin:0;">© <span id="year"></span> Farflung. Not affiliated with or endorsed by Trip.com. All fares, availability, and booking terms are set by Trip.com at the time of booking.</p>
+    </div>
+    <details>
+      <summary class="disclosure-toggle">Affiliate disclosure</summary>
+      <p class="disclosure-text">Farflung is an independent travel guide. Links marked "Book on Trip.com" are affiliate links — if you book through one, Trip.com pays us a small commission. It costs you nothing extra, and we don't recommend anywhere we wouldn't send a friend. We're not Trip.com and don't control its prices, inventory, or booking terms.</p>
+    </details>
+  </div>
+</footer>
+
+<script>
+  // Nav background on scroll
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  // Footer year
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // Scroll reveal
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // ---- AFFILIATE LINK: replace this with your real Trip.com affiliate URL ----
+  const AFFILIATE_URL = "https://www.trip.com/?Allianceid=4211278&SID=44004087&trip_sub1=&trip_sub3=D19085873";
+  document.querySelectorAll('[data-affiliate]').forEach(el => {
+    el.setAttribute('href', AFFILIATE_URL);
+    el.setAttribute('target', '_blank');
+    el.setAttribute('rel', 'sponsored noopener');
+  });
+</script>
+
+</body>
+</html>
